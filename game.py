@@ -1,5 +1,7 @@
 import random
 import pygame
+from food import  Food
+import sys
 
 # Colors
 black = pygame.Color(0, 0, 0)
@@ -8,14 +10,19 @@ red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
 
+f = Food()
+
 
 class Game:
     def __init__(self, snake_pos):
         # game variables
-        frame_size_x = 720
-        frame_size_y = 480
+        self.frame_size_x = 720
+        self.frame_size_y = 480
         # snake variables
+        self.start_pos = snake_pos
         self.snake_pos = snake_pos
+
+        self.eaten_food = False
 
         self.snake_body = [[snake_pos[0], snake_pos[1]], [snake_pos[0] - 10, snake_pos[1]],
                            [snake_pos[0] - (2 * 10), snake_pos[1]]]
@@ -23,11 +30,6 @@ class Game:
         # movement variables
         self.direction = 'RIGHT'
         self.change_to = self.direction
-
-        # food position variables
-        self.food_pos = [random.randrange(1, (frame_size_x // 10))
-                    * 10, random.randrange(1, (frame_size_y // 10)) * 10]
-        self.food_spawn = True
 
         self.score = 0
 
@@ -69,9 +71,11 @@ class Game:
             self.snake_pos[0] += 10
 
         self.snake_body.insert(0, list(self.snake_pos))
-        if self.snake_pos[0] == self.food_pos[0] and self.snake_pos[1] == self.food_pos[1]:
+        if self.eaten_food:
+            print("Collided")
+            self.eaten_food = False
             self.score += 1
-            self.food_spawn = False
+            f.food_spawn = False
         else:
             self.snake_body.pop()
 
@@ -82,3 +86,13 @@ class Game:
             # xy-coordinate -> .Rect(x, y, size_x, size_y)
             pygame.draw.rect(game_window, green,
                              pygame.Rect(pos[0], pos[1], 10, 10))
+
+    def death(self):
+        if self.snake_pos[0] < 0 or self.snake_pos[0] > self.frame_size_x - 10:
+            return True
+        if self.snake_pos[1] < 0 or self.snake_pos[1] > self.frame_size_y - 10:
+            return True
+
+
+
+

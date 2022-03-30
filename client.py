@@ -3,6 +3,7 @@ import sys
 import time
 import random
 from network import Network
+from food import Food
 from game import Game
 
 # Colors
@@ -12,8 +13,10 @@ red = pygame.Color(255, 0, 0)
 green = pygame.Color(0, 255, 0)
 blue = pygame.Color(0, 0, 255)
 
-difficulty = 10
+difficulty = 5
 score = 0
+
+f = Food()
 
 # FPS (frames per second) controller
 fps_controller = pygame.time.Clock()
@@ -68,6 +71,8 @@ def redrawWindow(win, player1, player2):
     player1.draw(game_window)
     player2.draw(game_window)
 
+    f.spawnFood(game_window)
+
     pygame.display.update()
 
 
@@ -85,6 +90,20 @@ def main():
                 pygame.quit()
         p.move()
 
+        if p.snake_pos[0] == f.food_pos[0] and p.snake_pos[1] == f.food_pos[1]:
+            p.eaten_food = True
+            print(f.food_spawn)
+            f.food_spawn = False
+
+            # Touching the snake body
+            for block in p2.snake_body[1:]:
+                if p.snake_pos[0] == block[0] and p.snake_pos[1] == block[1]:
+                    game_over()
+
+        if p.death():
+            game_over()
+
         redrawWindow(game_window, p, p2)
+
 
 main()
