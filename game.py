@@ -24,8 +24,8 @@ class Game:
 
         self.eaten_food = False
 
-        self.snake_body = [[snake_pos[0], snake_pos[1]], [snake_pos[0] - 10, snake_pos[1]],
-                           [snake_pos[0] - (2 * 10), snake_pos[1]]]
+        self.snake_body = [[snake_pos[0], snake_pos[1],snake_pos[2]], [snake_pos[0] - 10, snake_pos[1], snake_pos[2]],
+                           [snake_pos[0] - (2 * 10), snake_pos[1], snake_pos[2]]]
 
         # movement variables
         self.direction = 'RIGHT'
@@ -84,7 +84,7 @@ class Game:
             # Snake body
             # .draw.rect(play_surface, color, xy-coordinate)
             # xy-coordinate -> .Rect(x, y, size_x, size_y)
-            pygame.draw.rect(game_window, green,
+            pygame.draw.rect(game_window, red if pos[2] == 1 else green,
                              pygame.Rect(pos[0], pos[1], 10, 10))
 
     def death(self):

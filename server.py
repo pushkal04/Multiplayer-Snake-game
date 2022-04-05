@@ -8,7 +8,7 @@ import pickle
 server = "192.168.29.21"
 port = 5555
 
-# Lets us connect through IPv4 address
+# Connects through IPv4 for AF_INET; SOCT_STREAM - TCP
 s = socket.socket(socket.AF_INET, socket.SOCK_STREAM)
 
 try:
@@ -21,8 +21,8 @@ except socket.error as e:
 s.listen(2)
 print("Waiting for connection, Server Started")
 
-snake_pos1 = [100, 50]
-snake_pos2 = [200, 300]
+snake_pos1 = [100, 50, 1]
+snake_pos2 = [200, 300, 2]
 games = [Game(snake_pos1), Game(snake_pos2)]
 
 
